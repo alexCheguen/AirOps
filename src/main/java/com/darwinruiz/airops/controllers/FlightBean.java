@@ -59,9 +59,33 @@ public class FlightBean implements Serializable {
     /** Editar vuelo existente **/
     public void edit(Flight f) {
         clearFacesMessages();
+
+        // Clonamos el vuelo seleccionado para no modificar la lista directamente
         this.flight = f;
+
+        // Asignar las instancias correctas de piloto y aeronave desde el catálogo
+        if (f.getPilot() != null) {
+            this.flight.setPilot(
+                    catalog.pilots().stream()
+                            .filter(p -> p.getId().equals(f.getPilot().getId()))
+                            .findFirst()
+                            .orElse(null)
+            );
+        }
+
+        if (f.getAircraft() != null) {
+            this.flight.setAircraft(
+                    catalog.aircraft().stream()
+                            .filter(a -> a.getId().equals(f.getAircraft().getId()))
+                            .findFirst()
+                            .orElse(null)
+            );
+        }
+
+        // Mostrar diálogo
         this.dialogVisible = true;
     }
+
 
     /** Eliminar vuelo **/
     public void delete(Flight f) {

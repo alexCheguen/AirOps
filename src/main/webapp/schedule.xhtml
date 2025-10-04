@@ -138,7 +138,7 @@
 
 
 
-            <!-- Diálogo del formulario -->
+            <!-- Diálogo edición del formulario -->
             <p:dialog id="dlgFlight" header="Detalle del vuelo" widgetVar="dlgFlight"
                       modal="true" appendTo="@form" baseZIndex="100000"
                       resizable="false" draggable="false" width="920"
@@ -213,7 +213,7 @@
                     <div class="form-field">
                         <label for="pil">Piloto *</label>
                         <p:selectOneMenu id="pil"
-                                         value="#{flightBean.flight.pilot}"
+                                         value="#{flightBean.selected.pilot}"
                                          converter="pilotConverter"
                                          filter="true" filterMatchMode="contains"
                                          placeholder="Seleccione..."
@@ -228,7 +228,7 @@
                     <div class="form-field">
                         <label for="ac">Aeronave *</label>
                         <p:selectOneMenu id="ac"
-                                         value="#{flightBean.flight.aircraft}"
+                                         value="#{flightBean.selected.aircraft}"
                                          converter="aircraftConverter"
                                          filter="true" filterMatchMode="contains"
                                          placeholder="Seleccione..."
