@@ -226,4 +226,3 @@ public class FlightBean implements Serializable {
         this.detailVisible = b;
     }
 }
-
