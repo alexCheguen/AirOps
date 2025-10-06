@@ -53,6 +53,8 @@ public class FlightBean implements Serializable {
     public void newFlight() {
         clearFacesMessages();
         this.flight = new Flight();
+        this.flight.setPilot(null);
+        this.flight.setAircraft(null);
         this.dialogVisible = true;
     }
 

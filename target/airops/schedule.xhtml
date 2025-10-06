@@ -11,64 +11,66 @@
         <h:outputStylesheet>
             /* ---- Form grid responsive sin PrimeFlex ---- */
             .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-column-gap: 1.25rem;
-            grid-row-gap: .75rem;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-column-gap: 1.25rem;
+                grid-row-gap: .75rem;
             }
             .form-field {
-            display: flex;
-            flex-direction: column;
+                display: flex;
+                flex-direction: column;
             }
             .form-field label {
-            font-weight: 600;
-            color: #495057;
-            margin: 0 0 .25rem;
+                font-weight: 600;
+                color: #495057;
+                margin: 0 0 .25rem;
             }
             .form-field .w-full {
-            width: 100%;
+                width: 100%;
             }
             .form-field .ui-message,
             .form-field .p-message {
-            margin: .25rem 0 0 0;
+                margin: .25rem 0 0 0;
             }
             .form-footer {
-            display: flex;
-            justify-content: flex-end;
-            gap: .5rem;
-            margin-top: .75rem;
+                display: flex;
+                justify-content: flex-end;
+                gap: .5rem;
+                margin-top: .75rem;
             }
             @media (max-width: 992px) {
-            .form-grid { grid-template-columns: 1fr; }
+                .form-grid { grid-template-columns: 1fr; }
             }
             .ui-dialog .ui-dialog-content {
-            padding-top: .5rem;
+                padding-top: .5rem;
             }
             .colLabel {
-            width: 180px;
-            padding: .5rem .75rem .25rem 0;
-            text-align: right;
-            vertical-align: top;
-            white-space: nowrap;
-            font-weight: 600;
-            color: #495057;
+                width: 180px;
+                padding: .5rem .75rem .25rem 0;
+                text-align: right;
+                vertical-align: top;
+                white-space: nowrap;
+                font-weight: 600;
+                color: #495057;
             }
             .colField {
-            width: 320px;
-            padding: .25rem .75rem .5rem 0;
-            vertical-align: top;
+                width: 320px;
+                padding: .25rem .75rem .5rem 0;
+                vertical-align: top;
             }
             .w100 { width: 100%; }
             .fieldMsg .ui-message, .fieldMsg .p-message { margin:.25rem 0 0 0; }
 
             .toolbar {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 1rem;
+                display: flex;
+                justify-content: flex-end;
+                margin-bottom: 1rem;
             }
         </h:outputStylesheet>
 
         <h:form id="frmFlights">
+
+
 
             <div class="toolbar">
                 <p:commandButton value="Nuevo vuelo" icon="pi pi-plus" styleClass="mb-3"
@@ -103,10 +105,12 @@
                                      oncomplete="PF('dlgDetail').hide(); PF('dlgFlight').show();"/>
 
                     <p:commandButton icon="pi pi-trash" styleClass="ui-button-danger"
-                                     actionListener="#{flightBean.delete(flightBean.selected)}"
+                                     value="Eliminar"
                                      process="@this"
                                      update=":frmFlights:cal :global:msgs"
-                                     oncomplete="PF('dlgDetail').hide();"/>
+                                     onclick="PF('confirmDlg').show(); return false;">
+                        <f:setPropertyActionListener target="#{flightBean.selected}" value="#{flightBean.selected}" />
+                    </p:commandButton>
 
                     <h:outputText value="Número"/>
                     <h:outputText value="#{flightBean.selected.flightNumber}"/>
@@ -137,6 +141,14 @@
             </p:dialog>
 
 
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" widgetVar="confirmDlg"
+                             header="Confirmación" message="¿Está seguro de eliminar este vuelo?" icon="pi pi-exclamation-triangle">
+                <p:commandButton value="Sí" styleClass="ui-confirmdialog-yes ui-button-danger"
+                                 actionListener="#{flightBean.delete(flightBean.selected)}"
+                                 update=":frmFlights:cal :global:msgs"
+                                 oncomplete="PF('confirmDlg').hide(); PF('dlgDetail').hide();" />
+                <p:commandButton value="No" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+            </p:confirmDialog>
 
             <!-- Diálogo edición del formulario -->
             <p:dialog id="dlgFlight" header="Detalle del vuelo" widgetVar="dlgFlight"
@@ -213,7 +225,7 @@
                     <div class="form-field">
                         <label for="pil">Piloto *</label>
                         <p:selectOneMenu id="pil"
-                                         value="#{flightBean.selected.pilot}"
+                                         value="#{flightBean.flight.pilot}"
                                          converter="pilotConverter"
                                          filter="true" filterMatchMode="contains"
                                          placeholder="Seleccione..."
@@ -228,7 +240,7 @@
                     <div class="form-field">
                         <label for="ac">Aeronave *</label>
                         <p:selectOneMenu id="ac"
-                                         value="#{flightBean.selected.aircraft}"
+                                         value="#{flightBean.flight.aircraft}"
                                          converter="aircraftConverter"
                                          filter="true" filterMatchMode="contains"
                                          placeholder="Seleccione..."
